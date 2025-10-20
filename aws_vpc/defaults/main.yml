@@ -1,0 +1,39 @@
+---
+# Default variables for aws-vpc role
+vpc_name: "ansible-vpc"
+igw_name: "Demo_IGW"
+vpc_cidr: "10.0.0.0/16"
+vpc_domain_name: "ec2.internal"
+vpc_dns_servers:
+  - "AmazonProvidedDNS"
+
+aws_region: "us-east-1"
+
+# Vault configuration
+vault_addr: "{{ lookup('env', 'VAULT_ADDR') | default('https://127.0.0.1:8200') }}"
+vault_token: "{{ lookup('env', 'VAULT_TOKEN') }}"
+vault_aws_secret_path: "nTech_aws/data/nTech_aws_key"
+
+# AWS credentials - retrieved from Vault using hashi_vault lookup
+aws_access_key: "{{ lookup('community.hashi_vault.hashi_vault', 'nTech_aws/data/nTech_aws_key:aws_access_key validate_certs=false url=' + vault_addr) }}"
+aws_secret_key: "{{ lookup('community.hashi_vault.hashi_vault', 'nTech_aws/data/nTech_aws_key:aws_secret_key validate_certs=false url=' + vault_addr) }}"
+
+public_subnets:
+  - cidr: "10.0.1.0/24"
+    az: "us-east-1a"
+  - cidr: "10.0.2.0/24"
+    az: "us-east-1b"
+
+private_subnets:
+  - cidr: "10.0.10.0/24"
+    az: "us-east-1a"
+  - cidr: "10.0.20.0/24"
+    az: "us-east-1b"
+
+web_sg_name: "web-sg"
+db_sg_name: "db-sg"
+admin_cidr: "0.0.0.0/0"
+
+# Route table configuration
+public_rt_name: "{{ vpc_name }}-public-rt"
+private_rt_name: "{{ vpc_name }}-private-rt"
