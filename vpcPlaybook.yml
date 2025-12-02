@@ -8,5 +8,5 @@
   roles: 
     - aws_vpc
   vars_files:
-    - defaults/main.yml
+    - aws_vpc/defaults/main.yml
   
