@@ -32,6 +32,7 @@
 - name: Enable DNS hostnames
   amazon.aws.ec2_vpc_dhcp_option:
     vpc_id: "{{ vpc_id }}"
+     region: "{{ aws_region }}"
     domain_name: "{{ vpc_domain_name }}"
     dns_servers: "{{ vpc_dns_servers }}"
     state: present
